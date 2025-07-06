@@ -1,14 +1,15 @@
 # FastAPI and ASGI server - Absolute Latest 2025 versions
 fastapi==0.115.6
-uvicorn[standard]==0.32.5
+uvicorn[standard]==0.35.0
 
 # Database - Latest SQLAlchemy 2.x and PostgreSQL adapter
 sqlalchemy==2.0.37
-psycopg==3.2.3  # Modern async PostgreSQL adapter
+# Use psycopg3 for Python 3.13 compatibility
+psycopg[binary]==3.2.3  # Modern PostgreSQL adapter with binary
 
 # Validation and Settings - Latest Pydantic v2
 pydantic[email]==2.10.5
-pydantic-settings==2.8.4
+pydantic-settings==2.10.1
 
 # Authentication - Modern JWT and password hashing
 python-jose[cryptography]==3.3.0
@@ -16,8 +17,8 @@ passlib[bcrypt]==1.7.4
 argon2-cffi==23.1.0  # Modern password hashing
 
 # Utilities
-python-multipart==0.0.22
-python-dotenv==1.0.2
+python-multipart==0.0.20
+python-dotenv==1.1.1
 
 # Modern async and performance libraries
 typing-extensions==4.12.2
