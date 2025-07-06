@@ -32,6 +32,7 @@ export default function LoginPage() {
       const response = await apiClient.login(formData)
       
       if (response.error) {
+        console.error('Login error:', response.error)
         setError(response.error)
         dispatch(loginFailure())
       } else if (response.data) {
