@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { signIn, getSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
+import { auth } from '@/lib/auth/config'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -40,20 +41,8 @@ export default function LoginPage() {
         setError('Invalid email or password')
         dispatch(loginFailure())
       } else if (result?.ok) {
-        // Get session to update Redux store
-        const session = await getSession()
-        if (session) {
-          dispatch(loginSuccess({
-            user: {
-              id: parseInt(session.user.id),
-              email: session.user.email,
-              username: session.user.name || session.user.email,
-              is_active: true,
-              created_at: new Date().toISOString(),
-            },
-            token: session.accessToken || '',
-          }))
-        }
+        // For NextAuth v5, we'll handle session in the component that needs it
+        // For now, just redirect to dashboard
         router.push('/dashboard')
       }
     } catch (err) {

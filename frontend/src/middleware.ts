@@ -1,23 +1,19 @@
-import { withAuth } from 'next-auth/middleware'
+import { auth } from '@/lib/auth/config'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-export default withAuth(
-  function middleware(req) {
-    // Add any additional middleware logic here
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Check if user is trying to access protected routes
-        if (req.nextUrl.pathname.startsWith('/dashboard')) {
-          return !!token
-        }
-        
-        // Allow access to public routes
-        return true
-      },
-    },
+export async function middleware(request: NextRequest) {
+  const session = await auth()
+  
+  // Check if user is trying to access protected routes
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!session) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
   }
-)
+  
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: [
