@@ -43,9 +43,9 @@ async def login(
     
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.id}, expires_delta=access_token_expires
+        data={"sub": str(user.id)}, expires_delta=access_token_expires
     )
-    refresh_token = create_refresh_token(data={"sub": user.id})
+    refresh_token = create_refresh_token(data={"sub": str(user.id)})
     
     return {
         "access_token": access_token,
@@ -160,7 +160,15 @@ async def refresh_token(
             detail="Invalid refresh token"
         )
     
-    user_id = payload.get("sub")
+    user_id_str = payload.get("sub")
+    try:
+        user_id = int(user_id_str)
+    except (ValueError, TypeError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid user ID in token"
+        )
+    
     user_service = UserService(db)
     user = user_service.get_user_by_id(user_id)
     
@@ -173,7 +181,7 @@ async def refresh_token(
     # Create new access token
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.id}, expires_delta=access_token_expires
+        data={"sub": str(user.id)}, expires_delta=access_token_expires
     )
     
     return {

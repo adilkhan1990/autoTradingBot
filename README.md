@@ -4,7 +4,9 @@ A comprehensive trading bot platform with secure authentication and bot manageme
 
 ## Phase 1: Project Setup & Architecture ✅
 
-### Backend Features
+## Phase 2: Auth System Integration (OAuth + Email) ✅
+
+### Backend Features (Phase 1)
 - **FastAPI** with structured architecture (core, api, auth, bots, db)
 - **PostgreSQL** database with SQLAlchemy ORM
 - **JWT-based authentication** with secure password hashing
@@ -12,13 +14,31 @@ A comprehensive trading bot platform with secure authentication and bot manageme
 - **Docker containerization** for easy deployment
 - **Environment-based configuration**
 
-### Frontend Features
+### Backend Features (Phase 2)
+- **Enhanced User Model** with OAuth support (provider, provider_id, avatar_url, etc.)
+- **OAuth Integration** endpoints for Google and Facebook
+- **Advanced JWT** with access and refresh tokens
+- **User Service Layer** for centralized user management
+- **Protected Routes** with JWT middleware
+- **Email/Username Login** flexibility
+- **API Endpoints**: `/auth/login`, `/auth/register`, `/auth/me`, `/auth/oauth/register`, `/auth/refresh`
+
+### Frontend Features (Phase 1)
 - **Next.js 15** with App Router
 - **TailwindCSS** for styling
 - **ShadCN UI** components
 - **Redux Toolkit** for state management
 - **TypeScript** for type safety
 - **Responsive design** with modern UI/UX
+
+### Frontend Features (Phase 2)
+- **NextAuth.js Integration** with multiple providers
+- **OAuth Support** for Google and Facebook login
+- **Enhanced Login Page** with social authentication buttons
+- **Forgot Password** functionality
+- **Route Protection** middleware for protected pages
+- **Session Management** with NextAuth and Redux integration
+- **Modern Auth UI** with provider selection and seamless flows
 
 ## Project Structure
 
@@ -143,8 +163,11 @@ authbot/
 ## API Endpoints
 
 ### Authentication
-- `POST /api/v1/auth/login` - User login
+- `POST /api/v1/auth/login` - User login (email/password)
 - `POST /api/v1/auth/register` - User registration
+- `POST /api/v1/auth/oauth/register` - OAuth user registration/login
+- `GET /api/v1/auth/me` - Get current user information
+- `POST /api/v1/auth/refresh` - Refresh access token
 
 ### Users
 - `GET /api/v1/users/` - List users
@@ -168,6 +191,16 @@ BACKEND_CORS_ORIGINS=http://localhost:3000
 ### Frontend (.env.local)
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# NextAuth.js
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-nextauth-secret-here-change-in-production
+
+# OAuth Providers (Get these from Google/Facebook developer consoles)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+FACEBOOK_CLIENT_ID=your-facebook-client-id
+FACEBOOK_CLIENT_SECRET=your-facebook-client-secret
 ```
 
 ## Features Implemented
